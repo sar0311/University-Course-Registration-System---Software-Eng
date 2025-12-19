@@ -187,4 +187,19 @@ The composite use case diagram below shows all major interactions the **Student*
 - **Use Case – Register for Course / Drop Course**: Provide detailed views of the primary registration and drop workflows.  
 - **Sequence Diagrams**: Show the dynamic interactions among actors, services, and the database for register and drop use cases (both stakeholder and developer views).
 
+## Part III – Structural Modeling (Primary Contribution)
+
+### Overview
+Part III presents the structural design of the University Course Registration System, describing the main domain entities and the service-level architecture that supports the system’s behavior.
+
+### 3.1 Domain Class Model
+@startuml
+!include ../uml/class_domain_model.puml
+@enduml
+
+### 3.2 Service Architecture Class Diagram
+@startuml
+!include ../uml/class_service_architecture.puml
+@enduml
+
 
