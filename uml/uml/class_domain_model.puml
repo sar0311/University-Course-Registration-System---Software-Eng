@@ -1,0 +1,187 @@
+@startuml
+title Class Diagram - Domain Model (UCRS)
+
+skinparam classAttributeIconSize 0
+
+'========================
+' Generalization (Inheritance)
+'========================
+abstract class User {
+  - userId: String
+  - fullName: String
+  - email: String
+  - passwordHash: String
+  - status: UserStatus
+  + login(email: String, password: String): boolean
+  + logout(): void
+}
+
+class Student {
+  - studentNumber: String
+  - major: String
+  - level: String
+  + browseCourses(termId: String): List<CourseSection>
+  + requestRegistration(sectionId: String): EnrollmentRequest
+  + requestDrop(enrollmentId: String): DropRequest
+  + viewSchedule(termId: String): Schedule
+}
+
+class AcademicAdvisor {
+  - advisorId: String
+  - department: String
+  + reviewRequest(requestId: String): void
+  + approveRequest(requestId: String): void
+  + rejectRequest(requestId: String, reason: String): void
+}
+
+class Administrator {
+  - adminId: String
+  + createCourse(course: Course): void
+  + updateCourse(course: Course): void
+  + deleteCourse(courseId: String): void
+  + setSectionCapacity(sectionId: String, capacity: int): void
+  + setSectionSchedule(sectionId: String, schedule: Schedule): void
+}
+
+User <|-- Student
+User <|-- AcademicAdvisor
+User <|-- Administrator
+
+'========================
+' Core Academic Entities
+'========================
+class Course {
+  - courseId: String
+  - code: String
+  - title: String
+  - creditHours: int
+  + addPrerequisite(course: Course): void
+  + removePrerequisite(course: Course): void
+}
+
+class CourseSection {
+  - sectionId: String
+  - termId: String
+  - sectionNo: String
+  - capacity: int
+  - seatsTaken: int
+  + hasAvailableSeat(): boolean
+  + reserveSeat(): void
+  + releaseSeat(): void
+}
+
+class Schedule {
+  - days: String
+  - startTime: String
+  - endTime: String
+  - location: String
+  + conflictsWith(other: Schedule): boolean
+}
+
+class Enrollment {
+  - enrollmentId: String
+  - status: EnrollmentStatus
+  - createdAt: DateTime
+  + confirm(): void
+  + drop(): void
+}
+
+class EnrollmentRequest {
+  - requestId: String
+  - status: RequestStatus
+  - createdAt: DateTime
+  + submit(): void
+  + markApproved(): void
+  + markRejected(reason: String): void
+}
+
+class DropRequest {
+  - requestId: String
+  - status: RequestStatus
+  - createdAt: DateTime
+  + submit(): void
+  + markApproved(): void
+  + markRejected(reason: String): void
+}
+
+class PaymentTransaction {
+  - paymentId: String
+  - amount: double
+  - status: PaymentStatus
+  - createdAt: DateTime
+  + pay(): void
+  + fail(reason: String): void
+}
+
+class RefundTransaction {
+  - refundId: String
+  - amount: double
+  - status: RefundStatus
+  - createdAt: DateTime
+  + issue(): void
+  + markNotEligible(): void
+}
+
+'========================
+' Relationships
+'========================
+
+' Composition (strong ownership):
+' Course is composed of one or more sections.
+Course "1" *-- "1..*" CourseSection : sections
+
+' Aggregation (weaker "has"):
+Student "1" o-- "0..*" Enrollment : enrollments
+Student "1" o-- "0..*" EnrollmentRequest : registrationRequests
+Student "1" o-- "0..*" DropRequest : dropRequests
+
+' Associations:
+CourseSection "1" -- "1" Schedule : schedule
+Course "0..*" -- "0..*" Course : prerequisites
+
+' Enrollment links a Student with a CourseSection:
+Student "1" -- "0..*" Enrollment : enrolls
+CourseSection "1" -- "0..*" Enrollment : for
+
+' Requests link to student/section:
+Student "1" -- "0..*" EnrollmentRequest
+CourseSection "1" -- "0..*" EnrollmentRequest
+
+Student "1" -- "0..*" DropRequest
+Enrollment "1" -- "0..*" DropRequest : targets
+
+' Payment / refund:
+Enrollment "0..1" -- "0..1" PaymentTransaction : payment
+Enrollment "0..1" -- "0..1" RefundTransaction : refund
+
+'========================
+' Enums
+'========================
+enum EnrollmentStatus {
+  PENDING
+  ENROLLED
+  DROPPED
+}
+
+enum RequestStatus {
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+enum PaymentStatus {
+  SUCCESS
+  FAILED
+}
+
+enum RefundStatus {
+  ISSUED
+  NOT_ELIGIBLE
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+@enduml
