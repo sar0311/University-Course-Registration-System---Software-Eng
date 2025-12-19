@@ -194,8 +194,11 @@ Part III presents the structural design of the University Course Registration Sy
 
 ### 3.1 Domain Class Model
 @startuml
+@startuml
 !include ../uml/class_domain_model.puml
 @enduml
+@enduml
+
 
 ### 3.2 Service Architecture Class Diagram
 @startuml
