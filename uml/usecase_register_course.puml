@@ -1,0 +1,34 @@
+@startuml
+title Use Case Diagram – Register for Course
+
+left to right direction
+
+actor Student
+actor "Academic Advisor" as Advisor
+actor "Payment System" as Payment
+actor "University Database" as DB
+
+rectangle "University Course Registration System" as UCRS {
+  usecase "Register for Course" as UC_Register
+  usecase "Validate Prerequisites" as UC_Validate
+  usecase "Check Seat Availability" as UC_Seats
+  usecase "Record Enrollment" as UC_Record
+  usecase "Handle Payment" as UC_Payment
+}
+
+Student -- UC_Register
+
+UC_Register .> UC_Validate : <<include>>
+UC_Register .> UC_Seats : <<include>>
+UC_Register .> UC_Payment : <<include>>
+UC_Register .> UC_Record : <<include>>
+
+Advisor -- UC_Register : Approve / Reject
+Payment -- UC_Payment
+DB -- UC_Validate
+DB -- UC_Seats
+DB -- UC_Record
+
+@enduml
+
+

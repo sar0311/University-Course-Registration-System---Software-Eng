@@ -1,0 +1,22 @@
+@startuml
+title Context Diagram – University Course Registration System
+
+actor Student
+actor "Academic Advisor" as Advisor
+actor Instructor
+actor Administrator
+actor "University Database" as UnivDB
+actor "Payment System" as Payment
+
+rectangle "University Course Registration System" as UCRS
+
+Student --> UCRS : Register / Drop Courses\nView Schedule
+Advisor --> UCRS : Approve Enrollment
+Instructor --> UCRS : View Class List\nManage Grades
+Administrator --> UCRS : Manage Courses\nManage Users
+UCRS --> UnivDB : Store / Retrieve Data
+UCRS --> Payment : Process Payments
+
+@enduml
+
+

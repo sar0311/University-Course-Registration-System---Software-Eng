@@ -1,0 +1,37 @@
+@startuml
+title Sequence (Stakeholder) - Register for Course
+
+actor Student
+participant "University Course Registration System" as System
+actor "Academic Advisor" as Advisor
+participant "Payment System" as Payment
+
+Student -> System: Log in and browse courses
+System --> Student: Display available courses
+
+Student -> System: Select course and request registration
+System -> System: Validate prerequisites and seat availability
+
+alt Prerequisites or seats invalid
+  System --> Student: Show message\n"Cannot register for this course"
+else Validation successful
+  System -> Advisor: Send enrollment request\nfor review (if required)
+  Advisor --> System: Approve or reject request
+
+  alt Approved
+    System -> Payment: Request payment\n(tuition/fees)
+    Payment --> System: Payment confirmed or failed
+
+    alt Payment confirmed
+      System --> Student: Enrollment confirmed\nand schedule updated
+    else Payment failed
+      System --> Student: Registration pending\nPayment failed
+    end
+  else Rejected
+    System --> Student: Registration rejected\nwith reason
+  end
+end
+
+@enduml
+
+

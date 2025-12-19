@@ -1,0 +1,32 @@
+@startuml
+title Sequence (Stakeholder) - Drop Course
+
+actor Student
+participant "University Course Registration System" as System
+actor "Academic Advisor" as Advisor
+participant "Refund Service" as Refund
+
+Student -> System: Log in and open schedule
+System --> Student: Display current enrollments
+
+Student -> System: Request to drop course
+System -> System: Check drop deadline,\nfinancial holds, and policy
+
+alt Not eligible to drop
+  System --> Student: Cannot drop course\n(deadline passed / hold / policy)
+else Eligible to drop
+  System -> Advisor: Notify / request approval\n(if required by program)
+  Advisor --> System: Approve or reject
+
+  alt Approved
+    System -> Refund: Request refund\n(if eligible)
+    Refund --> System: Refund issued / not eligible
+    System --> Student: Course dropped\n+ refund info (if any)
+  else Rejected
+    System --> Student: Drop request rejected\nwith reason
+  end
+end
+
+@enduml
+
+

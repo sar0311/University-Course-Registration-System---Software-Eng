@@ -1,0 +1,31 @@
+@startuml
+title Use Case Diagram – Drop Course
+
+left to right direction
+
+actor Student
+actor "Academic Advisor" as Advisor
+actor "Payment/Refund Service" as Refund
+actor "University Database" as DB
+
+rectangle "University Course Registration System" as UCRS {
+  usecase "Drop Course" as UC_Drop
+  usecase "Check Drop Eligibility" as UC_Eligibility
+  usecase "Update Enrollment" as UC_Update
+  usecase "Issue Refund" as UC_Refund
+}
+
+Student -- UC_Drop
+
+UC_Drop .> UC_Eligibility : <<include>>
+UC_Drop .> UC_Update : <<include>>
+UC_Drop .> UC_Refund : <<include>>
+
+Advisor -- UC_Drop : Optional approval
+Refund -- UC_Refund
+DB -- UC_Eligibility
+DB -- UC_Update
+
+@enduml
+
+

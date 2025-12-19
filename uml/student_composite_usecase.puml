@@ -1,0 +1,26 @@
+@startuml
+title Composite Use Case Diagram – Student
+
+left to right direction
+
+actor Student
+
+rectangle "University Course Registration System" as UCRS {
+  usecase "Browse Available Courses" as UC_Browse
+  usecase "Register for Course" as UC_Register
+  usecase "Drop Course" as UC_Drop
+  usecase "Swap Course" as UC_Swap
+  usecase "View Schedule" as UC_Schedule
+  usecase "View Grades" as UC_Grades
+}
+
+Student -- UC_Browse
+Student -- UC_Register
+Student -- UC_Drop
+Student -- UC_Swap
+Student -- UC_Schedule
+Student -- UC_Grades
+
+@enduml
+
+

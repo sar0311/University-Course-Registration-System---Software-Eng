@@ -1,0 +1,52 @@
+@startuml
+title Sequence (Developer) - Register Course
+
+actor Student
+participant "Web Frontend" as Web
+participant "Auth Service" as Auth
+participant "Course Catalog Service" as Catalog
+participant "Enrollment Service" as EnrollSvc
+database "University DB" as DB
+participant "Advisor Service" as AdvisorSvc
+participant "Payment Service" as PaySvc
+queue "Event Bus" as Bus
+
+Student -> Web: Open registration page
+Web -> Auth: GET /session
+Auth --> Web: Session {isValid}
+Web --> Student: Display course search UI
+
+Student -> Web: Search and select course
+Web -> Catalog: GET /courses?filters
+Catalog --> Web: Course list
+
+Student -> Web: Confirm registration request
+Web -> EnrollSvc: POST /registrations\n{studentId, courseId}
+
+EnrollSvc -> DB: SELECT student, course,\nprerequisites, seats
+DB --> EnrollSvc: Validation data
+
+EnrollSvc -> AdvisorSvc: POST /enrollment-requests\n(if approval required)
+AdvisorSvc --> EnrollSvc: APPROVED or REJECTED
+
+alt Approved and seats available
+  EnrollSvc -> PaySvc: POST /payments\n{studentId, courseId, amount}
+  PaySvc --> EnrollSvc: PaymentStatus=SUCCESS/FAILED
+
+  alt Payment success
+    EnrollSvc -> DB: INSERT enrollment\n(status=ENROLLED)
+    EnrollSvc -> Bus: Publish CourseRegistered
+    EnrollSvc --> Web: 201 Created\n{enrollmentId}
+    Web --> Student: Show \"Enrollment Confirmed\"
+  else Payment failed
+    EnrollSvc --> Web: 402 Payment Required
+    Web --> Student: Show payment error
+  end
+else Rejected, invalid, or no seats
+  EnrollSvc --> Web: 4xx Error {reason}
+  Web --> Student: Show rejection reason
+end
+
+@enduml
+
+
