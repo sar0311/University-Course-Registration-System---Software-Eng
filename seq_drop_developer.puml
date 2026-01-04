@@ -1,0 +1,25 @@
+@startuml
+title Sequence (Developer) - Drop Course
+
+actor Student
+participant "Auth Service" as Auth
+participant "Enrollment Service" as EnrollSvc
+database "University DB" as DB
+participant "Advisor Service" as AdvisorSvc
+participant "Refund Service" as RefundSvc
+queue "Event Bus" as Bus
+
+Student -> Auth: Verify session token
+Auth --> Student: Session valid
+Student -> EnrollSvc: POST /drop {studentId, courseId}
+EnrollSvc -> DB: SELECT enrollment, termDates, holds
+DB --> EnrollSvc: Enrollment + policy
+EnrollSvc -> DB: UPDATE enrollment SET status=DROPPED
+EnrollSvc -> AdvisorSvc: POST /notifications (optional by policy)
+AdvisorSvc --> EnrollSvc: Ack
+EnrollSvc -> RefundSvc: POST /refunds {studentId, courseId} (if eligible)
+RefundSvc --> EnrollSvc: RefundStatus=ISSUED/NOT_ELIGIBLE
+EnrollSvc -> Bus: Publish CourseDropped
+EnrollSvc --> Student: Response {status, refundInfo}
+
+@enduml 
