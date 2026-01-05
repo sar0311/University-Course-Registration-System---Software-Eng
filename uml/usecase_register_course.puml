@@ -5,7 +5,7 @@ left to right direction
 
 actor Student
 actor "Academic Advisor" as Advisor
-actor "Payment System" as Payment
+actor "Payment Service as Payment
 actor "University Database" as DB
 
 rectangle "University Course Registration System" as UCRS {
