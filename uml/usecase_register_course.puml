@@ -5,7 +5,7 @@ left to right direction
 
 actor Student
 actor "Academic Advisor" as Advisor
-actor "Payment Service as Payment
+actor "Payment Service" as Payment
 actor "University Database" as DB
 
 rectangle "University Course Registration System" as UCRS {
@@ -30,5 +30,3 @@ DB -- UC_Seats
 DB -- UC_Record
 
 @enduml
-
-
