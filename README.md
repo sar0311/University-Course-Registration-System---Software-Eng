@@ -47,7 +47,7 @@ uml/
     ├── usecase_drop_course.puml             # Individual use case: Drop Course
     ├── seq_register_stakeholder.puml        # Sequence: Register Course (Stakeholder view)
     ├── seq_register_developer.puml           # Sequence: Register Course (Developer view)
-    ├── seq_dop_stakeholder.puml              # Sequence: Drop Course (Stakeholder view)
+    ├── seq_drop_stakeholder.puml              # Sequence: Drop Course (Stakeholder view)
     └── seq_drop_developer.puml               # Sequence: Drop Course (Developer view)
 ```
 
@@ -92,7 +92,7 @@ uml/
    - Detailed sequence diagram for developers
    - Includes technical components, services, and database interactions
 
-9. **Sequence Diagram – Drop Course (Stakeholder View)** (`seq_dop_stakeholder.puml`)
+9. **Sequence Diagram – Drop Course (Stakeholder View)** (`seq_drop_stakeholder.puml`)
    - High-level sequence diagram for stakeholders
    - Shows business-level interactions for dropping a course
 
