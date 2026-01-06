@@ -1,0 +1,54 @@
+@startuml
+title Service Architecture – UCRS
+
+class AuthService {
+  + authenticateUser()
+}
+
+class CourseCatalogService {
+  + getCourses()
+  + getSections()
+}
+
+class EnrollmentService {
+  + registerStudent()
+  + dropCourse()
+}
+
+class AdvisorService {
+  + approveRequest()
+}
+
+class PaymentService {
+  + processPayment()
+}
+
+class RefundService {
+  + issueRefund()
+}
+
+class UniversityDatabase {
+  + readData()
+  + writeData()
+}
+
+class EventBus {
+  + publishEvent()
+}
+
+' ===== Dependencies =====
+EnrollmentService --> CourseCatalogService
+EnrollmentService --> AdvisorService
+EnrollmentService --> PaymentService
+PaymentService --> RefundService
+
+AuthService --> UniversityDatabase
+CourseCatalogService --> UniversityDatabase
+EnrollmentService --> UniversityDatabase
+AdvisorService --> UniversityDatabase
+PaymentService --> UniversityDatabase
+
+EnrollmentService --> EventBus
+PaymentService --> EventBus
+
+@enduml
