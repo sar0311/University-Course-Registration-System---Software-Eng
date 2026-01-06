@@ -193,12 +193,16 @@ The composite use case diagram below shows all major interactions the **Student*
 Part III presents the structural design of the University Course Registration System, describing the main domain entities and the service-level architecture that supports the system’s behavior.
 
 ### 7.1 Domain Class Model
+```plantuml
 @startuml
 !include ../uml/class_domain_model.puml
 @enduml
+```
 
 ### 7.2 Service Architecture Class Diagram
+```plantuml
 @startuml
 !include ../uml/class_service_architecture.puml
 @enduml
+```
 
