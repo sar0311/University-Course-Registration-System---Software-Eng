@@ -1,0 +1,28 @@
+@startuml
+
+start
+:Student Logs In;
+:Browse Available Courses;
+:Select Course;
+
+if (Prerequisites Met?) then (Yes)
+    if (Seats Available?) then (Yes)
+        :Submit Registration Request;
+        :Advisor Reviews Request;
+
+        if (Approved?) then (Yes)
+            :Enrollment Confirmed;
+        else (No)
+            :Registration Rejected;
+        endif
+
+    else (No)
+        :Course Is Full;
+    endif
+
+else (No)
+    :Prerequisites Not Met;
+endif
+
+stop
+@enduml
