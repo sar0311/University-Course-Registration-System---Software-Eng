@@ -1,0 +1,12 @@
+@startuml
+
+start
+:Admin Logs In;
+:Open Course Management;
+:Create / Update / Delete Course;
+:Set Schedule & Capacity;
+:Save Changes;
+:Update Database;
+stop
+
+@enduml
